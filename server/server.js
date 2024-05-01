@@ -28,7 +28,7 @@ app.get('/api/v1', (req, res) => {
 
 // Mongodb database connection
 mongoose
-  .connect('mongodb+srv://mern:mern@cluster0.yn6ajff.mongodb.net/')
+  .connect('')
   .then(() => {
     console.log('Database connected successfully!..')
   })

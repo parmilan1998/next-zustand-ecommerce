@@ -20,7 +20,6 @@ const Dashboard = () => {
   const products = useProductStore((state) => state.products)
   const getProducts = useProductStore((state) => state.getProducts)
   const deleteProduct = useProductStore((state) => state.deleteProduct)
-  const { id } = useParams()
 
   useEffect(() => {
     getProducts()
