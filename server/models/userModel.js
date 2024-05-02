@@ -4,12 +4,13 @@ const userSchema = new mongoose.Schema(
   {
     fullname: {
       type: String,
-      required: [true, 'Please enter the fullname'],
+      required: true,
     },
     email: {
       type: String,
-      required: [true, 'Please enter the email address'],
-      unique: [true, 'Email is already taken'],
+      required: true,
+      unique: true,
+      lowercase: true,
     },
     role: {
       type: String,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please enter the user password'],
+      required: true,
     },
   },
   {

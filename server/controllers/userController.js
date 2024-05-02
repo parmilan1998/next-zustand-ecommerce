@@ -27,14 +27,8 @@ export const registerUser = async (req, res) => {
       ...req.body,
       password: hashPassword,
     })
-    // console.log(`User created successfully ${user}`)
 
-    // JWT Token (jsonwebtoken) -> Secure information
-    const token = jwt.sign({ _id: user.id }, 'secretkey1234', {
-      expiresIn: '90d',
-    })
-
-    res.status(201).json({ message: 'User created successfully', token })
+    res.status(200).json({ message: 'User created successfully', token })
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: error.message })
@@ -60,22 +54,43 @@ export const loginUser = async (req, res) => {
     }
 
     // JWT Token (jsonwebtoken) -> Secure information
-    const token = jwt.sign({ _id: user.id }, 'secretkey1234', {
-      expiresIn: '90d',
+    const token = jwt.sign({ sub: user._id }, 'secretkey1234', {
+      expiresIn: '30d',
+    })
+
+    // set the cookies
+    res.cookie('Authorization', token, {
+      expiresIn: '30d',
+      httpOnly: true,
+      sameSite: true,
+      secure: 'Production',
     })
 
     res.status(200).json({
       message: 'User login successfully!..',
       token,
-      user: {
-        _id: user.id,
-        fullname: user.fullname,
-        email: user.email,
-        role: user.role,
-      },
     })
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: error.message })
   }
+}
+
+//@Description -> Logout User
+//@route GET /api/v1/user/logout
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie('Authorization')
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+//@Description -> Check Auth
+//@route GET /api/v1/user/check-auth
+export const checkAuth = (req, res) => {
+  console.log(req.user)
+  res.sendStatus(200)
 }

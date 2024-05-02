@@ -3,12 +3,19 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import productRoute from './routes/productRoute.js'
 import userRoute from './routes/userRoute.js'
+import cookieParser from 'cookie-parser'
 
 // initialize the express app
 const app = express()
 
 // middleware
-app.use(cors())
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
+app.use(cookieParser())
 app.use(express.json())
 
 // PORT setting
@@ -28,7 +35,7 @@ app.get('/api/v1', (req, res) => {
 
 // Mongodb database connection
 mongoose
-  .connect('')
+  .connect('mongodb+srv://mern:mern@cluster0.yn6ajff.mongodb.net/')
   .then(() => {
     console.log('Database connected successfully!..')
   })
