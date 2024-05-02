@@ -1,11 +1,15 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import Link from 'next/link'
+// import { useRouter } from 'next/router'
 
 const UpdateProduct = () => {
+  // const router = useRouter()
+  // const { id } = router.query
   return (
     <div className='py-10 max-w-screen-xl md:px-12 px-4 mx-auto font-poppins'>
       <Link href='/dashboard'>

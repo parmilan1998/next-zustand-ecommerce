@@ -24,7 +24,7 @@ const Header = () => {
                   <li>
                     <Link
                       className='text-gray-500 transition hover:text-gray-500/75 text-base'
-                      href='/product'
+                      href='/shop'
                     >
                       Shop
                     </Link>

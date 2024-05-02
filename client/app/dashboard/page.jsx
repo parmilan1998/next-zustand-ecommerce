@@ -14,7 +14,6 @@ import Link from 'next/link'
 import useProductStore from '../../store/productStore'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
-import { useParams } from 'next/navigation'
 
 const Dashboard = () => {
   const products = useProductStore((state) => state.products)
@@ -75,7 +74,7 @@ const Dashboard = () => {
               <TableCell>{product.productBrand}</TableCell>
               <TableCell>{product.productCount}</TableCell>
               <TableCell>
-                {product.productDescription.slice(0, 60)}....
+                {product.productDescription}
               </TableCell>
               <TableCell>Rs.{product.productPrice}</TableCell>
               <TableCell className='text-right'>
