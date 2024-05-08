@@ -1,13 +1,11 @@
-![Home Page](https://github.com/parmilan1998/next-zustand-ecommerce/assets/103124559/1231b78a-12bf-4f81-972f-b2f803958eb5)*Dashboard*
+*Dashboard - Admin Login*
 ![Dashboard](https://github.com/parmilan1998/next-zustand-ecommerce/assets/103124559/75f8e4ad-dfe1-4f78-b1c5-00aeefe23418)
 
 *Home Page*
+![Home Page](https://github.com/parmilan1998/next-zustand-ecommerce/assets/103124559/1231b78a-12bf-4f81-972f-b2f803958eb5)
 
 *Register User*
-
-*Register Admin*
-
-*Normal User*
+![Register User](https://github.com/parmilan1998/next-zustand-ecommerce/assets/103124559/3a6c1abb-8e95-4ee0-bdb1-880e65c5339e)
 
 *Add Product*
 ![Add Product](https://github.com/parmilan1998/next-zustand-ecommerce/assets/103124559/da16ddfb-f8d1-4312-927a-46fb625a7b6c)
