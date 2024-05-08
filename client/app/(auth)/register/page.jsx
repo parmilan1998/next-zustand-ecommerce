@@ -4,37 +4,29 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import useUserStore from '@/store/userStore'
-// import { useRouter } from 'next/router'
+import useAuthStore from '@/store/authStore'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 const RegisterPage = () => {
-  // const router = useRouter()
-  const [fullname, setFullname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-  const register = useUserStore((state) => state.register)
+  const router = useRouter()
+  const { signUpForm, updateSignUpForm, register } = useAuthStore()
 
-  const registerUser = async () => {
-    try {
-      await register(fullname, email, password)
-      console.log('Registration Successfully')
-      setMessage('Registration Successfully!')
-    } catch (error) {
-      console.error('Registration error:', error)
-      setMessage('Registration Successfully!')
-    }
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    await register()
+    router.push('/login')
+    toast.success('User Registration Successfully!')
   }
+
   return (
     <>
       <div className='font-poppins py-12'>
         <form
+          onSubmit={handleRegister}
           action='#'
           className='py-6 rounded-lg max-w-lg md:mx-auto mx-4 bg-white'
         >
-          {message && (
-            <p className='text-green-500 text-center py-2 text-lg'>{message}</p>
-          )}
           <dir className='py-2 md:px-16 px-4'>
             <h1 className='text-center text-xl text-black font-bold '>
               Create an account
@@ -47,17 +39,19 @@ const RegisterPage = () => {
             <Label htmlFor='fullname'>Full Name</Label>
             <Input
               type='text'
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              placeholder='Enter full name'
+              name='fullname'
+              value={signUpForm.fullname}
+              onChange={updateSignUpForm}
+              placeholder='Enter the fullname'
             />
           </div>
           <div className='space-y-2 mb-5 md:mx-16 mx-4'>
             <Label htmlFor='email'>Email Address</Label>
             <Input
-              type='text'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type='email'
+              name='email'
+              value={signUpForm.email}
+              onChange={updateSignUpForm}
               placeholder='Enter email address'
             />
           </div>
@@ -65,15 +59,15 @@ const RegisterPage = () => {
             <Label htmlFor='password'>Password</Label>
             <Input
               type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name='password'
+              value={signUpForm.password}
+              onChange={updateSignUpForm}
               placeholder='Enter the password'
             />
           </div>
           <div className='space-y-2 mb-6 md:mx-16 mx-4'>
             <Button
               type='submit'
-              onClick={registerUser}
               className='w-full bg-blue-500 hover:bg-blue-700 ease-in duration-200'
             >
               Create account

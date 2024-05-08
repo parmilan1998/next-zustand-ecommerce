@@ -4,9 +4,11 @@ import cors from 'cors'
 import productRoute from './routes/productRoute.js'
 import userRoute from './routes/userRoute.js'
 import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv'
 
 // initialize the express app
 const app = express()
+dotenv.config()
 
 // middleware
 app.use(
@@ -17,9 +19,10 @@ app.use(
 )
 app.use(cookieParser())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // PORT setting
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)
 })
@@ -35,7 +38,7 @@ app.get('/api/v1', (req, res) => {
 
 // Mongodb database connection
 mongoose
-  .connect('mongodb+srv://mern:mern@cluster0.yn6ajff.mongodb.net/')
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log('Database connected successfully!..')
   })

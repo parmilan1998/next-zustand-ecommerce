@@ -14,6 +14,8 @@ import Link from 'next/link'
 import useProductStore from '../../store/productStore'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+import { GrView } from 'react-icons/gr'
+import toast from 'react-hot-toast'
 
 const Dashboard = () => {
   const products = useProductStore((state) => state.products)
@@ -27,6 +29,9 @@ const Dashboard = () => {
   // Delete product
   const deleteHandler = (id) => {
     deleteProduct(id)
+    toast.success('Product Delete Successfully!', {
+      duration: 4000,
+    })
   }
 
   return (
@@ -73,12 +78,15 @@ const Dashboard = () => {
               <TableCell>{product.productName}</TableCell>
               <TableCell>{product.productBrand}</TableCell>
               <TableCell>{product.productCount}</TableCell>
-              <TableCell>
-                {product.productDescription}
-              </TableCell>
+              <TableCell>{product.productDescription}</TableCell>
               <TableCell>Rs.{product.productPrice}</TableCell>
               <TableCell className='text-right'>
                 <div className='flex flex-row gap-4'>
+                  <Link href={`/product/${product._id}`}>
+                    <button>
+                      <GrView size={20} color='blue' />
+                    </button>
+                  </Link>
                   <Link href={`/dashboard/update/${product._id}`}>
                     <button>
                       <FaRegEdit size={20} color='green' />

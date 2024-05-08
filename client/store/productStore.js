@@ -3,12 +3,26 @@ import axios from 'axios'
 
 const useProductStore = create((set) => ({
   products: [],
+  createProductForm: {
+    productName: '',
+    brand: '',
+    count: 0,
+    price: 0,
+    description: '',
+  },
+  updateProductForm: {
+    _id: null,
+    productName: '',
+    brand: '',
+    count: 0,
+    price: 0,
+    description: '',
+  },
   // Fetch products   <-->
   getProducts: async () => {
     const res = await axios.get(`http://localhost:8080/api/v1/product`)
     set({ products: res.data })
   },
-
   // Delete product   <-->
   deleteProduct: async (id) => {
     await axios.delete(`http://localhost:8080/api/v1/product/${id}`)
@@ -16,22 +30,31 @@ const useProductStore = create((set) => ({
       products: state.products.filter((product) => product.id !== id),
     }))
   },
-
   // Add a product
-  addProduct: async ({ productName, count, brand, price, description }) => {
-    const response = await axios.post(`http://localhost:8080/api/v1/product`, {
-      productName,
-      count,
-      brand,
-      price,
-      description,
-    })
-    set((state) => {
-      state.products.push(response.data)
-    })
+  updateCreateProductForm: (e) => {
+    const { name, value } = e.target
+    set((state) => ({
+      createProductForm: { ...state.createProductForm, [name]: value },
+    }))
   },
 
-  // Update product
+  addProduct: async (e) => {
+    e.preventDefault()
+    const { createProductForm, products } = useProductStore.getState()
+    const res = await axios.post(`http://localhost:8080/api/v1/product`, {
+      createProductForm,
+    })
+    set({
+      products: [...products, res.data.product],
+      createProductForm: {
+        productName: '',
+        brand: '',
+        count: '',
+        price: '',
+        description: '',
+      },
+    })
+  },
   updateProduct: async (id, updatedProduct) => {
     await axios.put(
       `http://localhost:8080/api/v1/product/${id}`,
@@ -46,13 +69,3 @@ const useProductStore = create((set) => ({
 }))
 
 export default useProductStore
-
-// export const getProductById = (id) => {
-//   return (state) => {
-//     let pro = state.products.filter((c) => c.id === Number(id))
-//     if (pro) {
-//       return pro[0]
-//     }
-//     return null
-//   }
-// }

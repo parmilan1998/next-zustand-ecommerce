@@ -27,8 +27,7 @@ export const registerUser = async (req, res) => {
       ...req.body,
       password: hashPassword,
     })
-
-    res.status(200).json({ message: 'User created successfully', token })
+    res.status(200).json({ message: 'User created successfully' })
   } catch (error) {
     console.log(error)
     return res.status(500).json({ message: error.message })
@@ -54,7 +53,7 @@ export const loginUser = async (req, res) => {
     }
 
     // JWT Token (jsonwebtoken) -> Secure information
-    const token = jwt.sign({ sub: user._id }, 'secretkey1234', {
+    const token = jwt.sign({ sub: user._id }, process.env.SECRET_KEY, {
       expiresIn: '30d',
     })
 
@@ -69,6 +68,7 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       message: 'User login successfully!..',
       token,
+      user: { id: user._id, role: user.role },
     })
   } catch (error) {
     console.log(error)

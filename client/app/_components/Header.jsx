@@ -1,9 +1,27 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import useAuthStore from '@/store/authStore'
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
+  const logout = useAuthStore((state) => state.logout)
+  const loggedIn = useAuthStore((state) => state.loggedIn)
+  const user = useAuthStore((state) => state.user)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loggedIn) {
+      router.push('/')
+    }
+  }, [loggedIn])
+
+  const handleLogout = async () => {
+    await logout()
+    router.push('/')
+  }
+
   return (
     <>
       <header className='bg-white font-poppins'>
@@ -17,10 +35,19 @@ const Header = () => {
                 </h1>
               </Link>
             </div>
-
             <div className='hidden md:block'>
               <nav aria-label='Global'>
                 <ul className='flex items-center gap-6 text-sm'>
+                  {loggedIn && user.role === 'admin' && (
+                    <li>
+                      <Link
+                        className='text-gray-500 transition hover:text-gray-500/75 text-base'
+                        href='/dashboard'
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <Link
                       className='text-gray-500 transition hover:text-gray-500/75 text-base'
@@ -47,35 +74,49 @@ const Header = () => {
                       About
                     </Link>
                   </li>
-
-                  <li>
-                    <Link
-                      className='text-gray-500 transition hover:text-gray-500/75 text-base'
-                      href='/cart'
-                    >
-                      Cart
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      className='text-gray-500 transition hover:text-gray-500/75 text-base'
-                      href='#'
-                    >
-                      Feedback
-                    </Link>
-                  </li>
+                  {loggedIn && user.role !== 'admin' && (
+                    <li>
+                      <Link
+                        className='text-gray-500 transition hover:text-gray-500/75 text-base'
+                        href='/cart'
+                      >
+                        Cart
+                      </Link>
+                    </li>
+                  )}
+                  {loggedIn && user.role !== 'admin' && (
+                    <li>
+                      <Link
+                        className='text-gray-500 transition hover:text-gray-500/75 text-base'
+                        href='#'
+                      >
+                        Feedback
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </div>
 
             <div className='flex items-center gap-4'>
               <div className='sm:flex sm:gap-4'>
-                <Link href='/login'>
-                  <Button className='bg-cyan-500 text-white hover:bg-cyan-600'>
-                    Login
-                  </Button>
-                </Link>
+                {/* Login */}
+                {loggedIn ? (
+                  <>
+                    <Button
+                      onClick={handleLogout}
+                      className='bg-red-500 text-white hover:bg-red-600'
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Link href='/login'>
+                    <Button className='bg-cyan-500 text-white hover:bg-cyan-600'>
+                      Login
+                    </Button>
+                  </Link>
+                )}
               </div>
 
               <div className='block md:hidden'>

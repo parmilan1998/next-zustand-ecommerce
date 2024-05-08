@@ -3,7 +3,7 @@ import UserModel from '../models/userModel.js'
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // Read token 
+    // Read token
     const token = req.cookies.Authorization
 
     // Check if token exists
@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     // Decode the token
-    const decoded = jwt.verify(token, 'secretkey1234')
+    const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
     // Find user using decoded token
     const user = await UserModel.findById(decoded.sub)

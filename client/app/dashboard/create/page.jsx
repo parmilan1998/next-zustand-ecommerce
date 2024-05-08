@@ -1,33 +1,30 @@
-"use client"
-import { useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import useProductStore from '@/store/productStore';
+'use client'
+import { useState } from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import useProductStore from '@/store/productStore'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 const CreateProduct = () => {
-  const [message, setMessage] = useState('');
-  const [productName, setProductName] = useState('');
-  const [count, setCount] = useState('');
-  const [brand, setBrand] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const addProduct = useProductStore((state) => state.addProduct);
+  const [message, setMessage] = useState('')
+  const addProduct = useProductStore((state) => state.addProduct)
+  const updateCreateProductForm = useProductStore(
+    (state) => state.updateCreateProductForm
+  )
+  const createProductForm = useProductStore((state) => state.createProductForm)
+  const router = useRouter()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const productData = {
-      productName,
-      count: parseInt(count),
-      brand,
-      price: parseFloat(price),
-      description
-    };
-    await addProduct(productData);
-    setMessage('Product added successfully!');
-  };
+  const handleSubmit = async () => {
+    await addProduct(products)
+    setMessage('Product added successfully!')
+    toast.success('Product Created Successfully!', {
+      duration: 4000,
+    })
+  }
 
   return (
     <div className='py-10 max-w-screen-xl md:px-12 px-4 mx-auto font-poppins'>
@@ -50,24 +47,26 @@ const CreateProduct = () => {
           <div className='space-y-2 mb-5 mx-4 flex flex-col'>
             <Label htmlFor='productName'>Product Name</Label>
             <Input
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              value={createProductForm.productName}
+              onChange={updateCreateProductForm}
               name='productName'
+              type='text'
             />
           </div>
           <div className='space-y-2 mb-5 mx-4 flex flex-col'>
             <Label htmlFor='brand'>Brand</Label>
             <Input
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
+              value={createProductForm.brand}
+              onChange={updateCreateProductForm}
               name='brand'
+              type='text'
             />
           </div>
           <div className='space-y-2 mb-5 mx-4 flex flex-col'>
             <Label htmlFor='count'>Count</Label>
             <Input
-              value={count}
-              onChange={(e) => setCount(e.target.value)}
+              value={createProductForm.count}
+              onChange={updateCreateProductForm}
               type='number'
               name='count'
             />
@@ -75,8 +74,8 @@ const CreateProduct = () => {
           <div className='space-y-2 mb-5 mx-4 flex flex-col'>
             <Label htmlFor='price'>Product Price</Label>
             <Input
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={createProductForm.price}
+              onChange={updateCreateProductForm}
               type='number'
               name='price'
             />
@@ -84,9 +83,10 @@ const CreateProduct = () => {
           <div className='space-y-2 mb-5 mx-4 flex flex-col'>
             <Label htmlFor='description'>Description</Label>
             <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={createProductForm.description}
+              onChange={updateCreateProductForm}
               name='description'
+              type='text'
             />
           </div>
           <div className='space-y-2 mb-6 mx-4 flex flex-col'>
@@ -100,7 +100,7 @@ const CreateProduct = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateProduct;
+export default CreateProduct
